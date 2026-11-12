@@ -69,9 +69,14 @@ resource "azurerm_linux_virtual_machine" "vm1" {
   location            = azurerm_resource_group.main.location
   size                = "Standard_F1ads_v7"
   admin_username      = "adminuser"
+
   network_interface_ids = [
     azurerm_network_interface.vm1.id,
   ]
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   admin_ssh_key {
     username   = "adminuser"
