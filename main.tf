@@ -116,7 +116,7 @@ data "azurerm_client_config" "current" {
 }
 
 resource "azurerm_role_assignment" "entra_id_user_login" {
-  scope              = azurerm_linux_virtual_machine.vm1.id
-  role_definition_id = "Virtual Machine User Login"
-  principal_id       = data.azurerm_client_config.current.object_id
+  scope                = azurerm_linux_virtual_machine.vm1.id
+  role_definition_name = "Virtual Machine User Login"
+  principal_id         = data.azurerm_client_config.current.object_id
 }
