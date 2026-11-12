@@ -6,7 +6,14 @@ resource "azuread_group" "remote_access_users" {
   security_enabled = true
 }
 
-resource "azuread_group_member" "rajaa_remote_access_membership" {
+resource "azuread_group_member" "users_remote_access_membership" {
+  count            = length(var.remote_access_users)
   group_object_id  = azuread_group.remote_access_users.object_id
-  member_object_id = data.azuread_client_config.current.object_id
+  member_object_id = data.azuread_user.remote_access_users[count.index].object_id
+}
+
+//use iterators
+data "azuread_user" "remote_access_users" {
+  count               = length(var.remote_access_users)
+  user_principal_name = var.remote_access_users[count.index]
 }
