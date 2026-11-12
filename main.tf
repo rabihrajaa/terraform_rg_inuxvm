@@ -95,3 +95,28 @@ resource "azurerm_linux_virtual_machine" "vm1" {
     version   = "latest"
   }
 }
+
+/*
+"properties": {
+                "publisher": "Microsoft.Azure.ActiveDirectory",
+                "type": "AADSSHLoginForLinux",
+                "typeHandlerVersion": "1.0",
+                "autoUpgradeMinorVersion": true
+            }
+*/
+resource "azurerm_virtual_machine_extension" "entra_id_login" {
+  name                 = "${azurerm_linux_virtual_machine.vm1.name}-AADSSHLogin"
+  virtual_machine_id   = azurerm_linux_virtual_machine.vm1.id
+  publisher            = "Microsoft.Azure.ActiveDirectory"
+  type                 = "AADSSHLoginForLinux"
+  type_handler_version = "1.0"
+}
+
+data "azurerm_client_config" "current" {
+}
+
+resource "azurerm_role_assignment" "entra_id_user_login" {
+  scope              = azurerm_linux_virtual_machine.vm1.id
+  role_definition_id = "Virtual Machine User Login"
+  principal_id       = data.azurerm_client_config.current.id
+}
