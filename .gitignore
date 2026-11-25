@@ -1,4 +1,4 @@
-# Terraform
+git add env/# Terraform
 .terraform/
 *.tfstate
 *.tfstate.*
